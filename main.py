@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+import json5
 import yfinance as yf
 import pandas as pd
 import numpy as np
