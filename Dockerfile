@@ -14,10 +14,11 @@ WORKDIR /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the entire project files to the /app directory
+# Include app directory to avoid copying files in the working directory itself
 COPY . /app
 
 # Expose port 8000 for the application
 EXPOSE 8000
 
 # Define the command to run the application
-CMD ["uvicorn", "main: "--app",host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
