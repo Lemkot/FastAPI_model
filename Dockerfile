@@ -1,15 +1,23 @@
+
 #frontent/Dockerfile
 
+# Specify the base image
 FROM python:3.9
 
-COPY requirements.txt app/requirements.txt
+# Copy the requirements.txt file to the app directory
+COPY requirements.txt /app/requirements.txt
 
+# Set the working directory to /app
 WORKDIR /app
 
+# Install the required Python packages
 RUN pip install -r requirements.txt
 
+# Copy the entire project files to the /app directory
 COPY . /app
 
+# Expose port 8000 for the application
 EXPOSE 8000
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000" , "--reload"]
+# Define the command to run the application
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
