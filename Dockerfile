@@ -1,5 +1,5 @@
 
-#frontent/Dockerfile
+# frontent/Dockerfile
 
 # Specify the base image
 FROM python:3.9
@@ -11,7 +11,7 @@ COPY requirements.txt /app/requirements.txt
 WORKDIR /app
 
 # Install the required Python packages
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the entire project files to the /app directory
 COPY . /app
