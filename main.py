@@ -1,17 +1,23 @@
-from fastapi import FastAPI
-import json5
+from fastapi import FastAPI, HTTPException
 import yfinance as yf
 import pandas as pd
 import numpy as np
 from statsmodels.tsa.arima.model import ARIMA
+import logging
+import json
 
 app = FastAPI()
+logger = logging.getLogger(__name__)
 
 @app.post('/')
-async def price():
+async def price(data: dict = None):
+    if data is None:
+        logger.warning("Received an empty request.")
+        return {"error": "No data provided"}
+    
     try:
-        # Define the ticker symbol of the stock you want to fetch data for
-        ticker_symbol = 'AAPL'
+        # Define the ticker symbol from the request data or use a default value
+        ticker_symbol = data.get('ticker', 'AAPL')
 
         # Create a Yahoo Finance ticker object
         stock = yf.Ticker(ticker_symbol)
@@ -34,8 +40,8 @@ async def price():
         forecasted_value_next_day = model_fit.forecast(steps=1).iloc[0]
         
         return {"ticker": ticker_symbol, "forecasted_price": float(forecasted_value_next_day)}
-
     except Exception as e:
+        logger.error(f"An error occurred: {str(e)}")
         return {"error": str(e)}
 
 if __name__ == "__main__":
